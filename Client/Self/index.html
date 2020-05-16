@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+    <title>Blog App</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: cursive;
+        }
+        h1{
+            margin-left: 150px;
+            padding: 10px;
+        }
+        input , label , button {
+            display: block;
+            margin-left: 150px;
+            padding: 10px;
+        }
+        form input{
+            width:70%;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        form button{
+            width: 10%;
+            background-color: blue;
+            color: white;
+            padding: 15px;
+            font-size: large;
+            border-radius: 20px;
+        }
+        form button:hover{
+            background-color: green;
+        }
+        section{
+            padding:50px;
+        }
+        section .blog-title{
+            margin-right: auto;
+            margin-left: auto;
+            border: 4px dashed midnightblue;
+            width: 100px;
+            height:100px;
+            color:white;
+            background-color: orchid;
+            padding:20px;
+            font-family: 'Times New Roman', Times, serif;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <h1>Create Post</h1>
+    <form method = "POST" action="#">
+        <label for="title">Title</label>
+        <input type="text" placeholder="Enter Content" name="title">
+        <button>Submit</button>
+    </form>
+    <section>
+        <span class="blog-title">Hey First Blog<span>
+    </section>
+    <script>
+        const form = document.querySelector("form")
+        const button = document.querySelector('button')
+        button.addEventListener('click',function(){
+            var request = new XMLHttpRequest()
+            request.open('GET','http://localhost:3000/posts')
+            request.onload = function(){
+                var data = JSON.parse(this.response)
+                console.log(data)
+            }
+            request.send()
+        })
+        form.addEventListener('submit' , e => {
+            e.preventDefault()
+            const data = {
+                title : $('input').val()
+            }
+            const pdata = JSON.stringify(data)
+            $.ajax({
+                method : 'post',
+                url : 'http://localhost:3000/posts',
+                contentType : 'application/json',
+                dataType : 'json',
+                data : pdata,
+                success : function(){
+                    console.log('Success!')
+                },
+                error : function(){
+                    console.log('Error with the post request')
+                }
+
+            })
+        })
+       
+    </script>
+</body>
+</html>
